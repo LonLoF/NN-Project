@@ -8,7 +8,6 @@ import scipy.spatial.distance as spatial
 import pandas as pd
 import numpy as np
 import time
-import openai
 
 
 def save_index(embeddings: list, index_path: str = 'vector_database.index') -> faiss.IndexFlatL2:
