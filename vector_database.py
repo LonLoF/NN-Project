@@ -1,9 +1,12 @@
 # For faiss you have two options !pip install faiss-gpu or !pip install faiss-cpu
 # The faiss-gpu package provides CUDA-enabled indices, either package should be installed, but not both.
 
-#Copy-paste all of this to main program to use!
+#It is standalone file check strings_ranked_by_relatedness_vector args!
+#Add this to your main file: from vector_database import save_index, load_index, strings_ranked_by_relatedness_vector
 import faiss  # for vector database
 import scipy.spatial.distance as spatial
+import pandas as pd
+import numpy as np
 import time
 
 
@@ -33,13 +36,15 @@ def strings_ranked_by_relatedness_vector(
     query: str,
     index: faiss.IndexFlatL2,
     df: pd.DataFrame,
+    openai_api,
+    model: str = 'text-embedding-ada-002',
     relatedness_fn=lambda x, y: 1 - spatial.cosine(x, y),
     top_n: int = 5,
     timeit: bool = False
 ) -> tuple[list[str], list[float]]:
     """Returns a list of top_n strings and relatednesses, sorted from most related to least."""
-    query_embedding_response = openai.Embedding.create(
-        model=EMBEDDING_MODEL,
+    query_embedding_response = openai_api.Embedding.create(
+        model=model,
         input=query,
     )
     query_embedding = query_embedding_response["data"][0]["embedding"]
