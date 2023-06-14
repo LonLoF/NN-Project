@@ -24,6 +24,7 @@ def rank_answer(
         return 'Hinnang vastusele: Hinnangu päring liialt pikk'
         
     messages = [
+        {"role": "system", "content": 'do what is asked'},
         {"role": "user", "content": message},
     ]
     
