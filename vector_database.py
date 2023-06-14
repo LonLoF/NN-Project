@@ -8,6 +8,7 @@ import scipy.spatial.distance as spatial
 import pandas as pd
 import numpy as np
 import time
+import openai
 
 
 def save_index(embeddings: list, index_path: str = 'vector_database.index') -> faiss.IndexFlatL2:
@@ -34,17 +35,17 @@ def load_index(index_path: str = 'vector_database.index') -> faiss.IndexFlatL2:
 # Search function using the vector index and DataFrame
 def strings_ranked_by_relatedness_vector(
     query: str,
+    EMBEDDING_MODEL : str,
     index: faiss.IndexFlatL2,
     df: pd.DataFrame,
     openai_api,
-    model: str = 'text-embedding-ada-002',
     relatedness_fn=lambda x, y: 1 - spatial.cosine(x, y),
     top_n: int = 5,
     timeit: bool = False
 ) -> tuple[list[str], list[float]]:
     """Returns a list of top_n strings and relatednesses, sorted from most related to least."""
     query_embedding_response = openai_api.Embedding.create(
-        model=model,
+        model=EMBEDDING_MODEL,
         input=query,
     )
     query_embedding = query_embedding_response["data"][0]["embedding"]
