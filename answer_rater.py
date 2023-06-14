@@ -19,7 +19,7 @@ def rank_answer(
     """Rate the answer relevants to question"""
     if answer == ftf_answer: return 'Hinnang vastusele: -'
     
-    message = f'Does this "{answer}" answer "{question}" give just rating 0-10'
+    message = f'Does this "{answer}" answer "{question}" give just rating 0-10 for Accuracy, Depth, Clarity'
     if (num_tokens(message, model=model) > token_budget): 
         return 'Hinnang vastusele: Hinnangu päring liialt pikk'
         
